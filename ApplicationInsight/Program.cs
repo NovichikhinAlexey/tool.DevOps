@@ -13,9 +13,9 @@ namespace ApplicationInsight
 
         static void Main(string[] args)
         { 
-            var yamlroot = @"d:\lykke\emaar\emaar-live-service-yamls\";
-            var subscriptonId = "96a9bf3a-12ef-49ce-ae1f-c8f9692ab0d4";
-            var rgname = "EMR_CT_Prod_InfraStorageAccountsRG";
+            var yamlroot = @"";
+            var subscriptonId = "";
+            var rgname = "";
             var location = "northeurope";
 
             var deployments = Directory.GetFiles(yamlroot, "deployment.yaml", SearchOption.AllDirectories);

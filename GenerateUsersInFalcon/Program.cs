@@ -1,0 +1,121 @@
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+namespace GenerateUsersInFalcon
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //RegisterByList.Execute().Wait();
+            //TEst();
+            //Register();
+            Transfer("368386e62ef249418b26ff33bbf3d91621e9918073274696a074b8d99070ae3c").Wait();
+            
+            Console.WriteLine("Finished!");
+            Console.ReadLine();
+        }
+
+        private static void TEst()
+        {
+            var client = new HttpClient();
+            for (int i = 1000; i < 13000; i++)
+            {
+                var email = $"anovichikhin.test+{i}@gmail.com";
+                //Console.WriteLine(email);
+                var res = client.PostAsync("https://cupi.emrtoken.emaar.com/api/auth/login",
+                    new JsonContent(new
+                    {
+                        Email = email,
+                        Password = "Test123456!"
+                    })).Result;
+
+                if (res.StatusCode != HttpStatusCode.OK)
+                {
+                    Console.WriteLine($"ERROR: {email} : {res.StatusCode}");
+                }
+
+                if (i % 100 == 0)
+                {
+                    Console.WriteLine(email);
+                }
+            }
+        }
+
+        private static void Register()
+        {
+            var client = new HttpClient();
+            var url = 
+                "https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
+            //"https://cupi.emrtoken.emaar.com/api/customers/register";
+
+
+            for (int i = 6000; i < 11000; i++)
+            {
+                var email = $"anovichikhin.test+{i}@gmail.com";
+                Console.WriteLine(email);
+                var res = client.PostAsync(url,
+                    new JsonContent(new
+                    {
+                        Email = email,
+                        Password = "Test123456!",
+                        FirstName = "alex test",
+                        LastName = "test test"
+                    })).Result;
+
+                if (res.StatusCode != HttpStatusCode.OK)
+                {
+                    Console.WriteLine($"ERROR: {res.StatusCode}");
+                }
+
+            }
+
+
+        }
+
+        private static async Task Transfer(string token)
+        {
+            int startindex;
+            int endindex;
+            Console.Write("startindex=");
+            startindex = int.Parse(Console.ReadLine());
+            Console.Write("endindex=");
+            endindex = int.Parse(Console.ReadLine());
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var url = "https://cupi.emrtoken.emaar.com/api/wallets/transfer";
+
+            var index = 0;
+
+            for (int i = startindex; i <= endindex; i++)
+            {
+
+                var res = await client.PostAsync(url,
+                    new JsonContent(new
+                    {
+                        ReceiverEmail = $"anovichikhin.test+{i}@gmail.com",
+                        Amount = "1000"
+                    }));
+
+                Console.WriteLine($"{++index}. anovichikhin.test+{i}@gmail.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
+
+
+            }
+        }
+    }
+
+    public class JsonContent : StringContent
+    {
+        public JsonContent(object obj) :
+            base(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")
+        { }
+    }
+}
