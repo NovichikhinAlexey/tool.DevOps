@@ -12,10 +12,19 @@ namespace GenerateUsersInFalcon
     {
         static void Main(string[] args)
         {
-            //RegisterByList.Execute().Wait();
-            //TEst();
-            //Register();
-            Transfer("368386e62ef249418b26ff33bbf3d91621e9918073274696a074b8d99070ae3c").Wait();
+            var token = "368386e62ef249418b26ff33bbf3d91621e9918073274696a074b8d99070ae3c";
+
+            Console.WriteLine("1 - Register");
+            Console.WriteLine("2 - Login");
+            Console.WriteLine("3 - Transfer");
+            Console.Write("select command: ");
+            var command = Console.ReadLine();
+            switch (command)
+            {
+                case "1": Register(); break;;
+                case "2": TEst(); break;
+                case "3": Transfer(token).Wait(); break;
+            }
             
             Console.WriteLine("Finished!");
             Console.ReadLine();
@@ -23,8 +32,13 @@ namespace GenerateUsersInFalcon
 
         private static void TEst()
         {
+            Console.Write("start index: ");
+            var startindex = int.Parse(Console.ReadLine());
+            Console.Write("end index: ");
+            var endindex = int.Parse(Console.ReadLine());
+
             var client = new HttpClient();
-            for (int i = 1000; i < 13000; i++)
+            for (int i = startindex; i < endindex; i++)
             {
                 var email = $"anovichikhin.test+{i}@gmail.com";
                 //Console.WriteLine(email);
@@ -51,11 +65,16 @@ namespace GenerateUsersInFalcon
         {
             var client = new HttpClient();
             var url = 
-                "https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
-            //"https://cupi.emrtoken.emaar.com/api/customers/register";
+                //"https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
+                "https://cupi.emrtoken.emaar.com/api/customers/register";
+
+            Console.Write("start index: ");
+            var startindex = int.Parse(Console.ReadLine());
+            Console.Write("end index: ");
+            var endindex = int.Parse(Console.ReadLine());
 
 
-            for (int i = 6000; i < 11000; i++)
+            for (int i = startindex; i < endindex; i++)
             {
                 var email = $"anovichikhin.test+{i}@gmail.com";
                 Console.WriteLine(email);
@@ -82,10 +101,16 @@ namespace GenerateUsersInFalcon
         {
             int startindex;
             int endindex;
+            Console.Write("token=");
+            var t = Console.ReadLine();
+            if (!string.IsNullOrEmpty(token))
+                token = t;
             Console.Write("startindex=");
             startindex = int.Parse(Console.ReadLine());
             Console.Write("endindex=");
             endindex = int.Parse(Console.ReadLine());
+            
+
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
