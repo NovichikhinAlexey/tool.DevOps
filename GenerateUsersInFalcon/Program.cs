@@ -128,15 +128,15 @@ namespace GenerateUsersInFalcon
 
             for (int i = startindex; i <= endindex; i++)
             {
-
+                var email = $"anovichikhin.test+{i}@gmail.com"
                 var res = await client.PostAsync(url,
                     new JsonContent(new
                     {
-                        ReceiverEmail = $"anovichikhin.test+{1}@gmail.com",
+                        ReceiverEmail = email,
                         Amount = "1000"
                     }));
 
-                Console.WriteLine($"{++index}. anovichikhin.test+{1}@gmail.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
+                Console.WriteLine($"{++index}. {email} : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
 
 
             }
