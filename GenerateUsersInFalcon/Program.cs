@@ -40,7 +40,7 @@ namespace GenerateUsersInFalcon
             var client = new HttpClient();
             for (int i = startindex; i < endindex; i++)
             {
-                var email = $"anovichikhin.test+{i}@gmail.com";
+                var email = $"test+{i}@test.com";
                 //Console.WriteLine(email);
                 var res = client.PostAsync("https://cupi.emrtoken.emaar.com/api/auth/login",
                     new JsonContent(new
@@ -65,7 +65,6 @@ namespace GenerateUsersInFalcon
         {
             var client = new HttpClient();
             var url = 
-                //"https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
                 "https://cupi.emrtoken.emaar.com/api/customers/register";
 
             Console.Write("start index: ");
@@ -76,15 +75,15 @@ namespace GenerateUsersInFalcon
 
             for (int i = startindex; i < endindex; i++)
             {
-                var email = $"anovichikhin.test+{i}@gmail.com";
+                var email = $"test+{i}@test.com";
                 Console.WriteLine(email);
                 var res = client.PostAsync(url,
                     new JsonContent(new
                     {
                         Email = email,
                         Password = "Test123456!",
-                        FirstName = "alex test",
-                        LastName = "test test"
+                        FirstName = "Ivan test",
+                        LastName = "Ivanov test"
                     })).Result;
 
                 if (res.StatusCode != HttpStatusCode.OK)
@@ -126,11 +125,11 @@ namespace GenerateUsersInFalcon
                 var res = await client.PostAsync(url,
                     new JsonContent(new
                     {
-                        ReceiverEmail = $"anovichikhin.test+{i}@gmail.com",
+                        ReceiverEmail = $"test+{i}@test.com",
                         Amount = "10"
                     }));
 
-                Console.WriteLine($"{++index}. anovichikhin.test+{i}@gmail.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
+                Console.WriteLine($"{++index}. test+{i}@test.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
 
 
             }
