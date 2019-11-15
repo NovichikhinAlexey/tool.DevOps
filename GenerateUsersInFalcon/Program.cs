@@ -40,9 +40,14 @@ namespace GenerateUsersInFalcon
             var client = new HttpClient();
             for (int i = startindex; i < endindex; i++)
             {
-                var email = $"test+{i}@test.com";
+                var url =
+                    //"https://customer-api.falcon-dev.open-source.exchange/api/auth/login";
+                    "https://cupi.emrtoken.emaar.com/api/auth/login";
+
+
+                var email = $"anovichikhin.test+{i}@gmail.com";
                 //Console.WriteLine(email);
-                var res = client.PostAsync("https://cupi.emrtoken.emaar.com/api/auth/login",
+                var res = client.PostAsync(url,
                     new JsonContent(new
                     {
                         Email = email,
@@ -64,8 +69,9 @@ namespace GenerateUsersInFalcon
         private static void Register()
         {
             var client = new HttpClient();
-            var url = 
-                "https://cupi.emrtoken.emaar.com/api/customers/register";
+            var url =
+                //"https://cupi.emrtoken.emaar.com/api/customers/register";
+                "https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
 
             Console.Write("start index: ");
             var startindex = int.Parse(Console.ReadLine());
@@ -75,7 +81,7 @@ namespace GenerateUsersInFalcon
 
             for (int i = startindex; i < endindex; i++)
             {
-                var email = $"test+{i}@test.com";
+                var email = $"anovichikhin.test+{i}@gmail.com";
                 Console.WriteLine(email);
                 var res = client.PostAsync(url,
                     new JsonContent(new
@@ -83,7 +89,8 @@ namespace GenerateUsersInFalcon
                         Email = email,
                         Password = "Test123456!",
                         FirstName = "Ivan test",
-                        LastName = "Ivanov test"
+                        LastName = "Ivanov test",
+                        CountryOfNationalityId = 7
                     })).Result;
 
                 if (res.StatusCode != HttpStatusCode.OK)
@@ -125,7 +132,7 @@ namespace GenerateUsersInFalcon
                 var res = await client.PostAsync(url,
                     new JsonContent(new
                     {
-                        ReceiverEmail = $"test+{i}@test.com",
+                        ReceiverEmail = $"anovichikhin.test+{1}@gmail.com",
                         Amount = "10"
                     }));
 
