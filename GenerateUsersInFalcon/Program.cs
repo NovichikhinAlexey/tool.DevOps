@@ -133,7 +133,7 @@ namespace GenerateUsersInFalcon
                     new JsonContent(new
                     {
                         ReceiverEmail = $"anovichikhin.test+{1}@gmail.com",
-                        Amount = "10"
+                        Amount = "1000"
                     }));
 
                 Console.WriteLine($"{++index}. anovichikhin.test+{1}@gmail.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
