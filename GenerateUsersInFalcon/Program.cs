@@ -136,7 +136,7 @@ namespace GenerateUsersInFalcon
                         Amount = "10"
                     }));
 
-                Console.WriteLine($"{++index}. test+{i}@test.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
+                Console.WriteLine($"{++index}. anovichikhin.test+{1}@gmail.com : {res.StatusCode} | {res.Content.ReadAsStringAsync().Result}");
 
 
             }
