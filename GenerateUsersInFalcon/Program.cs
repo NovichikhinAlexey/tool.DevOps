@@ -41,8 +41,8 @@ namespace GenerateUsersInFalcon
             for (int i = startindex; i < endindex; i++)
             {
                 var url =
-                    //"https://customer-api.falcon-dev.open-source.exchange/api/auth/login";
-                    "https://cupi.emrtoken.emaar.com/api/auth/login";
+                    "https://customer-api.falcon-dev.open-source.exchange/api/auth/login";
+                    //"https://cupi.emrtoken.emaar.com/api/auth/login";
 
 
                 var email = $"anovichikhin.test+{i}@gmail.com";
@@ -70,8 +70,8 @@ namespace GenerateUsersInFalcon
         {
             var client = new HttpClient();
             var url =
-                //"https://cupi.emrtoken.emaar.com/api/customers/register";
-                "https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
+                "https://cupi.emrtoken.emaar.com/api/customers/register";
+                //"https://customer-api.falcon-dev.open-source.exchange/api/customers/register";
 
             Console.Write("start index: ");
             var startindex = int.Parse(Console.ReadLine());
@@ -128,7 +128,7 @@ namespace GenerateUsersInFalcon
 
             for (int i = startindex; i <= endindex; i++)
             {
-                var email = $"anovichikhin.test+{i}@gmail.com"
+                var email = $"test+{i}@gmail.com";
                 var res = await client.PostAsync(url,
                     new JsonContent(new
                     {
