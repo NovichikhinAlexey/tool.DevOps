@@ -1,0 +1,5107 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Customer API"
+  },
+  "paths": {
+    "/api/agents": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Returns agent general information.",
+        "description": "Used to get agent status of current customer.\r\n\r\nError codes:\r\n- **CustomerProfileDoesNotExist**",
+        "operationId": "GetAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AgentResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Registers an agent.",
+        "description": "Used to register current customer as an agent.\r\n\r\nError codes:\r\n- **AgentAlreadyApproved**\r\n- **SfAccountAlreadyExisting**\r\n- **EmailNotVerified**\r\n- **NotEnoughTokens**\r\n- **CustomerProfileDoesNotExist**\r\n- **CountryPhoneCodeDoesNotExist**\r\n- **CountryOfResidenceDoesNotExist**\r\n- **ImageUploadError**\r\n- **ConnectorRegistrationError**",
+        "operationId": "RegisterAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "The KYA form data.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/AgentRegistrationRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login the client.",
+        "description": "Error codes:\r\n- **InvalidEmailFormat**\r\n- **InvalidCredentials**\r\n- **InvalidPasswordFormat**\r\n- **LoginExistsWithDifferentProvider**\r\n- **CustomerBlocked**\r\n- **LoginAttemptsWarning**",
+        "operationId": "Login",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/LoginRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LoginResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Client Error"
+          }
+        }
+      }
+    },
+    "/api/auth/google-login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login the client.",
+        "description": "Error codes:\r\n- **InvalidCredentials**\r\n- **LoginExistsWithDifferentProvider**\r\n- **InvalidOrExpiredGoogleAccessToken**\r\n- **CustomerBlocked**",
+        "operationId": "GoogleLogin",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GoogleLoginRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LoginResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout the client.",
+        "operationId": "Logout",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/commonInformation": {
+      "get": {
+        "tags": [
+          "CommonInformation"
+        ],
+        "summary": "Returns emaar common links information",
+        "operationId": "GetCommonInformationAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EmaarCommonInformationResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/conversionRate/partner": {
+      "get": {
+        "tags": [
+          "ConversionRate"
+        ],
+        "summary": "Converts given amount to base currency based on partner",
+        "operationId": "GetPartnerRateAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "PartnerId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Amount",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ConversionRateResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/conversionRate/earnRule": {
+      "get": {
+        "tags": [
+          "ConversionRate"
+        ],
+        "summary": "Converts given amount to base currency based on earn rule",
+        "operationId": "GetEarnRuleRateAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "EarnRuleId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Amount",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ConversionRateResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/conversionRate/burnRule": {
+      "get": {
+        "tags": [
+          "ConversionRate"
+        ],
+        "summary": "Converts given amount to base currency based on burn rule",
+        "operationId": "GetBurnRuleRateAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "BurnRuleId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Amount",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ConversionRateResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/currencyConverter/emr/baseCurrency": {
+      "get": {
+        "tags": [
+          "CurrencyConverter"
+        ],
+        "summary": "Converts EMR to base currency using global currency rate.",
+        "operationId": "ConvertEmrToBaseCurrencyAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "The amount to be converted.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CurrencyConverterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/customers": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Gets the current Customer info.",
+        "operationId": "GetCustomerInfoAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CustomerInfoResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/customers/register": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Register a new client.",
+        "description": "Error codes:\r\n- **InvalidEmailFormat**\r\n- **LoginAlreadyInUse**\r\n- **InvalidPasswordFormat**\r\n- **AlreadyRegisteredWithGoogle**\r\n- **InvalidCountryOfNationalityId**",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RegistrationRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RegistrationResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/customers/google-register": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Register a new customer with google account.",
+        "description": "Error codes:\r\n- **AlreadyRegisteredWithGoogle**\r\n- **LoginAlreadyInUse**\r\n- **InvalidOrExpiredGoogleAccessToken**\r\n- **InvalidCountryOfNationalityId**",
+        "operationId": "GoogleRegisterAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GoogleRegistrationRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RegistrationResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/customers/generateresetpasswordlink": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Generates link for resetting the user password.",
+        "operationId": "GenerateResetPasswordLink",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GenerateResetPasswordLinkRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/customers/change-password": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Changes the password of a customer and re-logins customer with new password.",
+        "description": "Error codes:\r\n- **InvalidPasswordFormat**\r\n- **InvalidCredentials**\r\n- **InvalidEmailFormat**\r\n- **LoginExistsWithDifferentProvider**\r\n- **CustomerBlocked**",
+        "operationId": "ChangePasswordAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ChangePasswordRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LoginResponseModel"
+            }
+          },
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/customers/validate-reset-password-identifier": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Validates the reset password identifier of a customer.",
+        "description": "Error codes:\r\n- **IdentifierDoesNotExist**\r\n- **ProvidedIdentifierHasExpired**",
+        "operationId": "ValidateResetPasswordIdentifierAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ValidateResetPasswordIdentifierRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/customers/password-validation-rules": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Returns password validation rules",
+        "operationId": "GetPasswordValidationRules",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PasswordValidationRulesDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/customers/reset-password": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Resets the password of a customer.",
+        "description": "Error codes:\r\n- **ThereIsNoIdentifierForThisCustomer**\r\n- **ReachedMaximumRequestForPeriod**\r\n- **NoCustomerWithSuchEmail**\r\n- **IdentifierMismatch**\r\n- **ProvidedIdentifierHasExpired**\r\n- **CustomerDoesNotExist**\r\n- **InvalidPasswordFormat**",
+        "operationId": "ResetPasswordAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordRequestModel"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/customers/refresh-token": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Refreshes the customer authorization token",
+        "operationId": "RefreshTokenAsync",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/earnRules": {
+      "get": {
+        "tags": [
+          "EarnRules"
+        ],
+        "summary": "Returns a collection earn rules.",
+        "description": "Used to get available earn rules.",
+        "operationId": "GetAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Pending",
+                "Active",
+                "Completed",
+                "Inactive"
+              ]
+            },
+            "collectionFormat": "multi",
+            "uniqueItems": false
+          },
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "description": "The Current Page",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "The amount of items that the page holds",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EarnRulesListResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/earnRules/{earnRuleId}": {
+      "get": {
+        "tags": [
+          "EarnRules"
+        ],
+        "summary": "Returns a earn rule model",
+        "description": "Used to get available earn rule.",
+        "operationId": "GetAsyncObsolete",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "earnRuleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EarnRuleExtendedModel"
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/earnRules/search": {
+      "get": {
+        "tags": [
+          "EarnRules"
+        ],
+        "operationId": "GetAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "earnRuleId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EarnRuleExtendedModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/earnRules/{earnRuleId}/staking": {
+      "get": {
+        "tags": [
+          "EarnRules"
+        ],
+        "summary": "Returns a earn rule staking information model",
+        "description": "Used to get available earn rule staking information.",
+        "operationId": "GetEarnRuleStakingAsyncObsolete",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "earnRuleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EarnRuleStakingListModel"
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/earnRules/staking": {
+      "get": {
+        "tags": [
+          "EarnRules"
+        ],
+        "operationId": "GetEarnRuleStakingAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "earnRuleId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EarnRuleStakingListModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/emails/verification": {
+      "post": {
+        "tags": [
+          "Emails"
+        ],
+        "summary": "Generates verification email for the customer in the system.",
+        "description": "Error codes:\r\n- **EmailIsAlreadyVerified**\r\n- **SenderCustomerNotFound**\r\n- **ReachedMaximumRequestForPeriod**",
+        "operationId": "GenerateVerificationEmailAsync",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/emails/verify-email": {
+      "post": {
+        "tags": [
+          "Emails"
+        ],
+        "summary": "Verifies email for the customer in the system.",
+        "description": "Error codes:\r\n- **EmailIsAlreadyVerified**\r\n- **VerificationCodeDoesNotExist**\r\n- **VerificationCodeMismatch**\r\n- **VerificationCodeExpired**",
+        "operationId": "VerifyEmailAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "Email verification request model",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/EmailVerificationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/history/operations": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Get operations history for the authorized user",
+        "operationId": "GetCustomerOperationsHistoryAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "description": "The Current Page",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "The amount of items that the page holds",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaginatedOperationsHistoryResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Redirects to swagger ui.",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect",
+            "schema": {
+              "$ref": "#/definitions/IsAliveResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/IsAlive": {
+      "get": {
+        "tags": [
+          "IsAlive"
+        ],
+        "summary": "Checks service is alive",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/IsAliveResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/lists/countriesOfResidence": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Returns a collection of countries of residence.",
+        "description": "Used to get a collection of countries of residence.",
+        "operationId": "GetCountriesOfResidenceAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CountryOfResidenceModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lists/countryPhoneCodes": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Returns a collection of country dialing codes.",
+        "description": "Used to get a collection of country dialing codes.",
+        "operationId": "GetCountryPhoneCodesAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CountryPhoneCodeModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mobile/settings": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Returns mobile application settings",
+        "operationId": "GetSettings",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/partners/messages/{partnerMessageId}": {
+      "get": {
+        "tags": [
+          "PartnersMessages"
+        ],
+        "summary": "Get partner message by id",
+        "description": "",
+        "operationId": "GetPartnerMessageAsyncObsolete",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "partnerMessageId",
+            "in": "path",
+            "description": "Partner message id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetPartnerMessageResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/partners/messages": {
+      "get": {
+        "tags": [
+          "PartnersMessages"
+        ],
+        "summary": "Get partner message by id",
+        "operationId": "GetPartnerMessageAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "partnerMessageId",
+            "in": "query",
+            "description": "Partner message id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetPartnerMessageResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/partners/payments": {
+      "get": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Get the details about payment request",
+        "operationId": "GetPaymentRequestDetailsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "PaymentRequestId",
+            "in": "query",
+            "description": "Id of the payment request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PartnerPaymentRequestDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/partners/payments/pending": {
+      "get": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Get pending payment requests for customer",
+        "operationId": "GetPendingPaymentRequestsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaginatedPartnerPaymentRequestsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/partners/payments/succeeded": {
+      "get": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Get payment requests which where successfully completed",
+        "operationId": "GetSucceededPaymentRequestsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaginatedPartnerPaymentRequestsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/partners/payments/failed": {
+      "get": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Get payment requests which failed or were cancelled",
+        "operationId": "GetFailedPaymentRequestsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaginatedPartnerPaymentRequestsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/partners/payments/approval": {
+      "post": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Approve a payment request as a customer",
+        "description": "Error codes:\r\n- **InvalidCustomerId**\r\n- **CustomerWalletMissing**\r\n- **InvalidAmount**\r\n- **NotEnoughTokens**\r\n- **PaymentDoesNotExist**\r\n- **PaymentRequestsIsForAnotherCustomer**\r\n- **PaymentIsNotInACorrectStatusToBeUpdated**\r\n- **CustomerWalletBlocked**",
+        "operationId": "ApprovePaymentRequestAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ApprovePartnerPaymentRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/partners/payments/rejection": {
+      "post": {
+        "tags": [
+          "PartnersPayments"
+        ],
+        "summary": "Reject a payment request as a customer",
+        "description": "Error codes:\r\n- **InvalidCustomerId**\r\n- **CustomerWalletMissing**\r\n- **InvalidAmount**\r\n- **NotEnoughTokens**\r\n- **PaymentDoesNotExist**\r\n- **PaymentRequestsIsForAnotherCustomer**\r\n- **PaymentIsNotInACorrectStatusToBeUpdated**\r\n- **CustomerWalletBlocked**",
+        "operationId": "RejectPaymentRequestAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RejectPartnerPaymentRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/phones/generate-verification": {
+      "post": {
+        "tags": [
+          "Phones"
+        ],
+        "summary": "Generates verification sms to verify customer's phone number.",
+        "description": "Error codes:\r\n- **PhoneIsAlreadyVerified**\r\n- **SenderCustomerNotFound**\r\n- **ReachedMaximumRequestForPeriod**\r\n- **CustomerPhoneIsMissing**",
+        "operationId": "GeneratePhoneVerificationAsync",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/phones/verify": {
+      "post": {
+        "tags": [
+          "Phones"
+        ],
+        "summary": "Verifies customer's phone number in the system.",
+        "description": "Error codes:\r\n- **PhoneIsAlreadyVerified**\r\n- **VerificationCodeDoesNotExist**\r\n- **VerificationCodeExpired**\r\n- **CustomerPhoneIsMissing**",
+        "operationId": "VerifyPhoneAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "Phone verification request model",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/VerifyPhoneRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/phones": {
+      "post": {
+        "tags": [
+          "Phones"
+        ],
+        "summary": "Sets phone number for the customer",
+        "description": "Error codes:\r\n- **CustomerProfileDoesNotExist**\r\n- **CountryPhoneCodeDoesNotExist**",
+        "operationId": "SetCustomerPhoneAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "Phone verification request model",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/SetCustomerPhoneRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/pushNotifications/registrations": {
+      "post": {
+        "tags": [
+          "PushNotifications"
+        ],
+        "summary": "Register customer for push notifications",
+        "operationId": "RegisterForPushNotificationsAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "Push notification registration model",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PushNotificationRegisterRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PushNotificationRegisterResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PushNotifications"
+        ],
+        "operationId": "CancelPushRegistrationNotificationsAsync",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "infobipPushRegistrationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/pushNotifications/registrations/{infobipPushRegistrationId}": {
+      "delete": {
+        "tags": [
+          "PushNotifications"
+        ],
+        "summary": "Cancel customer's registration for push notifications",
+        "description": "",
+        "operationId": "CancelPushRegistrationNotificationsAsyncObsolete",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "infobipPushRegistrationId",
+            "in": "path",
+            "description": "Infobip Push Registration Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/referrals": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get referral code for logged customer.",
+        "description": "Function. Return the referral code for the logged customer.",
+        "operationId": "GetReferralCodeAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ReferralResponseModel"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/referrals/leads": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get list of lead referrals for a customer",
+        "operationId": "GetLeadReferralsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LeadReferralsListResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/referrals/lead": {
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Add lead referral for a customer.",
+        "description": "Function. Return whenever the referral was added successfully or not.\r\nError codes:\r\n- **ReferralLeadCustomerIdInvalid**\r\n- **ReferralLeadAlreadyExist**\r\n- **CustomerNotApprovedAgent**\r\n- **ReferralLeadNotProcessed**\r\n- **CanNotReferYourself**\r\n- **ReferralLeadAlreadyConfirmed**",
+        "operationId": "AddLeadReferralAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "leadRequestModel",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ReferralLeadRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/referrals/lead/confirm": {
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Confirm pending lead referral.",
+        "description": "Error codes:\r\n- **ReferralNotFound**",
+        "operationId": "ConfirmReferralLeadAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ConfirmReferralLeadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/referrals/hotels": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get list of hotel referrals for a customer",
+        "operationId": "GetHotelReferralAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/HotelReferralsListResponseModel"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Add hotel referral for a customer.",
+        "description": "Function. Return whenever the referral was added successfully or not.\r\nError codes:\r\n- **ReferralAlreadyConfirmed**\r\n- **ReferralsLimitExceeded**\r\n- **CampaignDoesNotExists**",
+        "operationId": "AddHotelReferralAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "hotelReferralRequestModel",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/HotelReferralRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/referrals/hotel/confirm": {
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Confirm pending hotel referral.",
+        "description": "Error codes:\r\n- **ReferralNotFound**\r\n- **ReferralExpired**",
+        "operationId": "ConfirmReferralHotelAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ConfirmReferralHotelRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ConfirmReferralHotelResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/LykkeApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/referrals/all": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get list of all referrals (hotel and lead) for a customer",
+        "operationId": "GetAllReferralsAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Ongoing",
+              "Accepted",
+              "Expired"
+            ],
+            "x-ms-enum": {
+              "name": "CommonReferralStatus",
+              "modelAsString": false
+            }
+          },
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "description": "The Current Page",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "The amount of items that the page holds",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ReferralsListResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/spendRules": {
+      "get": {
+        "tags": [
+          "SpendRules"
+        ],
+        "summary": "Returns a collection spend rules.",
+        "description": "Used to get available spend rules.",
+        "operationId": "GetAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SpendRuleListDetailsModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spendRules/{spendRuleId}": {
+      "get": {
+        "tags": [
+          "SpendRules"
+        ],
+        "summary": "Returns a spend rule model",
+        "description": "Used to get available spend rule.",
+        "operationId": "GetAsyncObsolete",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "spendRuleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SpendRuleDetailsModel"
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/spendRules/search": {
+      "get": {
+        "tags": [
+          "SpendRules"
+        ],
+        "summary": "Returns a spend rule model",
+        "description": "Used to get available spend rule.",
+        "operationId": "GetAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "spendRuleId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SpendRuleDetailsModel"
+            }
+          }
+        }
+      }
+    },
+    "/api/wallets/customer": {
+      "get": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Get all wallets for specific customer.",
+        "description": "Error codes:\r\n- **InvalidCustomerId**\r\n- **CustomerWalletMissing**",
+        "operationId": "GetByCustomerAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/WalletResponseModel"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/transfer": {
+      "post": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Transfers balance from current Logged Customer to selected Receiver Customer",
+        "description": "Error codes:\r\n- **InvalidReceiver**\r\n- **InvalidAmount**\r\n- **SenderCustomerNotEnoughBalance**\r\n- **SenderCustomerNotFound**\r\n- **TargetCustomerNotFound**\r\n- **TransferSourceAndTargetMustBeDifferent**\r\n- **TransferSourceCustomerWalletBlocked**\r\n- **TransferTargetCustomerWalletBlocked**",
+        "operationId": "TransferAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "requestModel",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TransferOperationRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TransferOperationResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/transfers": {
+      "get": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Get all transfers for the logged customer.",
+        "operationId": "GetTransfersAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "CurrentPage",
+            "in": "query",
+            "description": "The Current Page",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10000,
+            "minimum": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "The amount of items that the page holds",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500,
+            "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaginatedTransfersResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/payment-transfer": {
+      "post": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Spend tokens on a campaign",
+        "description": "Error codes:\r\n- **SenderCustomerNotEnoughBalance**\r\n- **InvalidAmount**\r\n- **CustomerDoesNotExist**\r\n- **CampaignDoesNotExists**\r\n- **InvalidCampaignId**\r\n- **CustomerWalletMissing**\r\n- **CustomerWalletBlocked**",
+        "operationId": "PaymentTransferAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "requestModel",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PaymentTransferRequestModel"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/linkRequest": {
+      "put": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Approve public wallet linking request",
+        "description": "Error codes:\r\n- **InvalidSignature**\r\n- **CustomerWalletMissing**\r\n- **InvalidCustomerId**\r\n- **InvalidPrivateAddress**\r\n- **InvalidPublicAddress**\r\n- **LinkingRequestAlreadyApproved**\r\n- **LinkingRequestAlreadyExists**\r\n- **LinkingRequestDoesNotExist**\r\n- **CustomerDoesNotExist**\r\n- **CustomerWalletBlocked**",
+        "operationId": "ApproveExternalWalletLinkRequestAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ApproveExternalWalletLinkRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Create public wallet link request",
+        "description": "Error codes:\r\n- **InvalidSignature**\r\n- **CustomerWalletMissing**\r\n- **InvalidCustomerId**\r\n- **InvalidPrivateAddress**\r\n- **InvalidPublicAddress**\r\n- **LinkingRequestAlreadyApproved**\r\n- **LinkingRequestAlreadyExists**\r\n- **LinkingRequestDoesNotExist**\r\n- **CustomerDoesNotExist**\r\n- **CustomerWalletBlocked**",
+        "operationId": "SubmitExternalWalletLinkRequestAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LinkWalletResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Delete public wallet link request",
+        "description": "Error codes:\r\n- **InvalidSignature**\r\n- **CustomerWalletMissing**\r\n- **InvalidCustomerId**\r\n- **InvalidPrivateAddress**\r\n- **InvalidPublicAddress**\r\n- **LinkingRequestAlreadyApproved**\r\n- **LinkingRequestAlreadyExists**\r\n- **LinkingRequestDoesNotExist**\r\n- **CustomerDoesNotExist**\r\n- **CustomerWalletBlocked**",
+        "operationId": "DeleteExternalWalletLinkRequestAsync",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/external-transfer": {
+      "post": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Transfer amount of tokens to linked public wallet",
+        "description": "Error codes:\r\n- **InvalidAmount**\r\n- **CustomerWalletBlocked**\r\n- **CustomerWalletMissing**\r\n- **NotEnoughTokens**\r\n- **CustomerDoesNotExist**\r\n- **PublicWalletIsNotLinked**\r\n- **InvalidCustomerId**",
+        "operationId": "ExternalWalletTransferAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "description": "The amount of tokens",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TransferToExternalWalletRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/linkRequest/nextFee": {
+      "get": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Get fee value for the next wallet linking approval",
+        "operationId": "GetNextWalletLinkingFeeAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NextWalletLinkingFeeResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/wallets/transferToPublic/fee": {
+      "get": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Get fee value for transfer for the public network",
+        "operationId": "GetTransferToPublicFeeAsync",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Access token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TransferToPublicFeeResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AgentResponseModel": {
+      "description": "Represents an agent general information.",
+      "required": [
+        "CountryPhoneCodeId",
+        "Status",
+        "IsEligible",
+        "HasEnoughTokens",
+        "HasVerifiedEmail"
+      ],
+      "type": "object",
+      "properties": {
+        "Email": {
+          "description": "The customer email.",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "The customer first name.",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The customer last name.",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The country phone code identifier.",
+          "type": "integer"
+        },
+        "PhoneNumber": {
+          "description": "The customer phone number.",
+          "type": "string"
+        },
+        "Status": {
+          "description": "Indicates the agent status.",
+          "enum": [
+            "None",
+            "NotAgent",
+            "Rejected",
+            "ApprovedAgent"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "AgentStatus",
+            "modelAsString": false
+          }
+        },
+        "IsEligible": {
+          "description": "If {true} all requirements completed and the customer could become an agent, otherwise {false}.",
+          "type": "boolean"
+        },
+        "HasEnoughTokens": {
+          "description": "Indicated that customer has enough tokens to become agent.",
+          "type": "boolean"
+        },
+        "HasVerifiedEmail": {
+          "description": "Indicated that customer email verified.",
+          "type": "boolean"
+        },
+        "RequiredNumberOfTokens": {
+          "description": "The number of tokens that required to become an agent.",
+          "type": "string"
+        }
+      }
+    },
+    "AgentRegistrationRequestModel": {
+      "description": "Represents a KYA form data.",
+      "required": [
+        "CountryPhoneCodeId",
+        "CountryOfResidenceId"
+      ],
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "description": "The customer first name.",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The customer last name.",
+          "type": "string"
+        },
+        "PhoneNumber": {
+          "description": "The customer phone number.",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The country phone code identifier.",
+          "type": "integer"
+        },
+        "CountryOfResidenceId": {
+          "format": "int32",
+          "description": "The agent country of residence identifier.",
+          "type": "integer"
+        },
+        "Note": {
+          "description": "The note to Emaar.",
+          "type": "string"
+        },
+        "Images": {
+          "description": "A collection of agent photos required for KYA.",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageModel"
+          }
+        }
+      }
+    },
+    "ImageModel": {
+      "description": "Represents an image details.",
+      "required": [
+        "DocumentType"
+      ],
+      "type": "object",
+      "properties": {
+        "DocumentType": {
+          "description": "The document type of the image.",
+          "enum": [
+            "None",
+            "Passport",
+            "DriverLicenseFront",
+            "DriverLicenseBack",
+            "NationalIdFront",
+            "NationalIdBack"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "DocumentType",
+            "modelAsString": false
+          }
+        },
+        "Name": {
+          "description": "The name of the image.",
+          "type": "string"
+        },
+        "Content": {
+          "description": "The image encoded in base64.",
+          "type": "string"
+        }
+      }
+    },
+    "LoginRequestModel": {
+      "required": [
+        "Email",
+        "Password"
+      ],
+      "type": "object",
+      "properties": {
+        "Email": {
+          "pattern": "\\A(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\\Z",
+          "type": "string"
+        },
+        "Password": {
+          "format": "password",
+          "type": "string"
+        }
+      }
+    },
+    "LoginResponseModel": {
+      "type": "object",
+      "properties": {
+        "Token": {
+          "type": "string"
+        }
+      }
+    },
+    "GoogleLoginRequestModel": {
+      "required": [
+        "AccessToken"
+      ],
+      "type": "object",
+      "properties": {
+        "AccessToken": {
+          "description": "Access token for Google Api which will be used to retrieve customer's email",
+          "type": "string"
+        }
+      }
+    },
+    "EmaarCommonInformationResponse": {
+      "type": "object",
+      "properties": {
+        "SupportPhoneNumber": {
+          "type": "string"
+        },
+        "FacebookLink": {
+          "type": "string"
+        },
+        "TwitterLink": {
+          "type": "string"
+        },
+        "InstagramLink": {
+          "type": "string"
+        },
+        "LinkedInLink": {
+          "type": "string"
+        },
+        "YouTubeLink": {
+          "type": "string"
+        },
+        "DownloadAppLink": {
+          "type": "string"
+        },
+        "TermsAndConditionLink": {
+          "type": "string"
+        },
+        "PrivacyPolicyLink": {
+          "type": "string"
+        },
+        "DownloadAndroidAppLink": {
+          "type": "string"
+        },
+        "DownloadIsoAppLink": {
+          "type": "string"
+        },
+        "SupportEmailAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "ConversionRateResponseModel": {
+      "required": [
+        "Error"
+      ],
+      "type": "object",
+      "properties": {
+        "Amount": {
+          "type": "string"
+        },
+        "Rate": {
+          "type": "string"
+        },
+        "CurrencyCode": {
+          "type": "string"
+        },
+        "Error": {
+          "enum": [
+            "None",
+            "InvalidCustomerId",
+            "InvalidEarnRuleId",
+            "InvalidBurnRuleId",
+            "InvalidPartnerId",
+            "PartnerNotFound",
+            "CustomerNotFound",
+            "EarnRuleNotFound",
+            "SpendRuleNotFound",
+            "ConversionRateNotFound"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "ConversionRateErrorCodes",
+            "modelAsString": false
+          }
+        }
+      }
+    },
+    "CurrencyConverterResponse": {
+      "description": "Represents a currency converter response.",
+      "type": "object",
+      "properties": {
+        "Amount": {
+          "description": "The formatted target currency amount.",
+          "type": "string"
+        }
+      }
+    },
+    "CustomerInfoResponseModel": {
+      "required": [
+        "IsEmailVerified",
+        "IsAccountBlocked",
+        "IsPhoneNumberVerified",
+        "CountryOfNationalityId"
+      ],
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "PhoneNumber": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "IsEmailVerified": {
+          "type": "boolean"
+        },
+        "IsAccountBlocked": {
+          "type": "boolean"
+        },
+        "IsPhoneNumberVerified": {
+          "type": "boolean"
+        },
+        "CountryPhoneCode": {
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "CountryOfNationalityId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "CountryOfNationalityName": {
+          "type": "string"
+        }
+      }
+    },
+    "RegistrationRequestModel": {
+      "required": [
+        "FirstName",
+        "LastName",
+        "CountryOfNationalityId"
+      ],
+      "type": "object",
+      "properties": {
+        "Email": {
+          "description": "Email of the customer used for login",
+          "type": "string"
+        },
+        "ReferralCode": {
+          "description": "Unique code which is used to identify which user referred this one to the application",
+          "type": "string"
+        },
+        "Password": {
+          "description": "Password",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "The customer first name.",
+          "maxLength": 50,
+          "pattern": "(^([a-zA-Z]+[\\- ]?)+[a-zA-Z'’]+$)|(^([\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+[\\- ]?)+[\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+$)",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The customer last name.",
+          "maxLength": 50,
+          "pattern": "(^([a-zA-Z]+[\\- ]?)+[a-zA-Z'’]+$)|(^([\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+[\\- ]?)+[\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+$)",
+          "type": "string"
+        },
+        "CountryOfNationalityId": {
+          "format": "int32",
+          "description": "Identifier of the country of nationality of the customer",
+          "type": "integer"
+        }
+      }
+    },
+    "RegistrationResponseModel": {
+      "type": "object",
+      "properties": {}
+    },
+    "GoogleRegistrationRequestModel": {
+      "required": [
+        "AccessToken",
+        "FirstName",
+        "LastName",
+        "CountryOfNationalityId"
+      ],
+      "type": "object",
+      "properties": {
+        "AccessToken": {
+          "description": "Access token which will be used to get customer's email from google api",
+          "type": "string"
+        },
+        "ReferralCode": {
+          "description": "Unique code which is used to identify which user referred this one to the application",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "The customer first name.",
+          "maxLength": 50,
+          "pattern": "(^([a-zA-Z]+[\\- ]?)+[a-zA-Z'’]+$)|(^([\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+[\\- ]?)+[\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+$)",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The customer last name.",
+          "maxLength": 50,
+          "pattern": "(^([a-zA-Z]+[\\- ]?)+[a-zA-Z'’]+$)|(^([\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+[\\- ]?)+[\\u0600-\\u065F\\u066A-\\u06EF\\u06FA-\\u06FF]+$)",
+          "type": "string"
+        },
+        "CountryOfNationalityId": {
+          "format": "int32",
+          "description": "Identifier of the country of nationality of the customer",
+          "type": "integer"
+        }
+      }
+    },
+    "GenerateResetPasswordLinkRequestModel": {
+      "required": [
+        "Email"
+      ],
+      "type": "object",
+      "properties": {
+        "Email": {
+          "description": "Email of the customer used for login",
+          "pattern": "\\A(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\\Z",
+          "type": "string"
+        }
+      }
+    },
+    "ChangePasswordRequestModel": {
+      "type": "object",
+      "properties": {
+        "Password": {
+          "description": "Password",
+          "type": "string"
+        }
+      }
+    },
+    "ValidateResetPasswordIdentifierRequest": {
+      "type": "object",
+      "properties": {
+        "ResetPasswordIdentifier": {
+          "description": "Password reset identifier",
+          "type": "string"
+        }
+      }
+    },
+    "LykkeApiErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PasswordValidationRulesDto": {
+      "required": [
+        "MinLength",
+        "MaxLength",
+        "MinUpperCase",
+        "MinLowerCase",
+        "MinSpecialSymbols",
+        "MinNumbers",
+        "AllowWhiteSpaces"
+      ],
+      "type": "object",
+      "properties": {
+        "MinLength": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MaxLength": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MinUpperCase": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MinLowerCase": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MinSpecialSymbols": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MinNumbers": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "AllowedSpecialSymbols": {
+          "type": "string"
+        },
+        "AllowWhiteSpaces": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ResetPasswordRequestModel": {
+      "description": "Contains information for the Password Reset Request",
+      "type": "object",
+      "properties": {
+        "CustomerEmail": {
+          "description": "Email of the Customer",
+          "type": "string"
+        },
+        "ResetIdentifier": {
+          "description": "Password Reset Identifier used to determinate if a Password Request was made",
+          "type": "string"
+        },
+        "Password": {
+          "description": "The new Customer Password",
+          "type": "string"
+        }
+      }
+    },
+    "EarnRulesListResponseModel": {
+      "description": "Represents Earn Rules",
+      "required": [
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "EarnRules": {
+          "description": "Earn Rules",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EarnRuleModel"
+          }
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "Total count",
+          "type": "integer"
+        }
+      }
+    },
+    "EarnRuleModel": {
+      "required": [
+        "Status",
+        "RewardType",
+        "FromDate",
+        "CreationDate",
+        "CompletionCount"
+      ],
+      "type": "object",
+      "properties": {
+        "Conditions": {
+          "description": "Represents a list of Conditions' names",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionModel"
+          }
+        },
+        "OptionalConditions": {
+          "description": "Represents a list of optional Conditions' names",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionModel"
+          }
+        },
+        "Id": {
+          "description": "The earn rule unique identifier.",
+          "type": "string"
+        },
+        "Title": {
+          "description": "The earn rule localized title.",
+          "type": "string"
+        },
+        "Status": {
+          "description": "Represents status of the Earn Rule",
+          "enum": [
+            "Pending",
+            "Active",
+            "Completed",
+            "Inactive"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "CampaignStatus",
+            "modelAsString": false
+          }
+        },
+        "Description": {
+          "description": "The earn rule localized description.",
+          "type": "string"
+        },
+        "ImageUrl": {
+          "description": "The earn rule localized imageUrl.",
+          "type": "string"
+        },
+        "Reward": {
+          "description": "Represents the Reward that is going to be granted once all conditions are met",
+          "type": "string"
+        },
+        "RewardType": {
+          "description": "Type of the reward for the Earn Rule",
+          "enum": [
+            "Fixed",
+            "ConversionRate"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "RewardType",
+            "modelAsString": false
+          }
+        },
+        "FromDate": {
+          "format": "date-time",
+          "description": "Represents Start Date of the Earn Rule",
+          "type": "string"
+        },
+        "ToDate": {
+          "format": "date-time",
+          "description": "Represents End Date of the Earn Rule",
+          "type": "string"
+        },
+        "CreatedBy": {
+          "description": "Represents identification of User who created Earn Rule",
+          "type": "string"
+        },
+        "CreationDate": {
+          "format": "date-time",
+          "description": "Represents the creation date of the Earn Rule",
+          "type": "string"
+        },
+        "CompletionCount": {
+          "format": "int32",
+          "description": "Represents how many times, Earn Rule can be completed",
+          "type": "integer"
+        }
+      }
+    },
+    "ConditionModel": {
+      "description": "Represents a base condition model",
+      "required": [
+        "CompletionCount",
+        "HasStaking",
+        "RewardType",
+        "UsePartnerCurrencyRate"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Type": {
+          "description": "The bonus type name.",
+          "type": "string"
+        },
+        "DisplayName": {
+          "description": "The bonus type display name.",
+          "type": "string"
+        },
+        "ImmediateReward": {
+          "description": "The amount of reward that will be given once the condition is completed.",
+          "type": "string"
+        },
+        "CompletionCount": {
+          "format": "int32",
+          "description": "The number of condition completion.",
+          "type": "integer"
+        },
+        "HasStaking": {
+          "description": "Identify if the condition has staking",
+          "type": "boolean"
+        },
+        "StakeAmount": {
+          "description": "Represents stake amount",
+          "type": "string"
+        },
+        "StakingPeriod": {
+          "format": "int32",
+          "description": "Represents a staking period",
+          "type": "integer"
+        },
+        "StakeWarningPeriod": {
+          "format": "int32",
+          "description": "Represents stake warning period",
+          "type": "integer"
+        },
+        "StakingRule": {
+          "format": "double",
+          "description": "Represents staking percentage",
+          "type": "number"
+        },
+        "BurningRule": {
+          "format": "double",
+          "description": "Represents staking burning percent",
+          "type": "number"
+        },
+        "RewardType": {
+          "description": "Indicates the reward type.",
+          "enum": [
+            "Fixed",
+            "ConversionRate"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "RewardType",
+            "modelAsString": false
+          }
+        },
+        "AmountInTokens": {
+          "description": "The amount in tokens to calculate rate.",
+          "type": "string"
+        },
+        "AmountInCurrency": {
+          "format": "double",
+          "description": "The amount in currency to calculate rate.",
+          "type": "number"
+        },
+        "UsePartnerCurrencyRate": {
+          "description": "Indicates that the partner currency rate should be used to convert an amount.",
+          "type": "boolean"
+        },
+        "RewardRatio": {
+          "$ref": "#/definitions/RewardRatioAttributeModel",
+          "description": "Represents a condition reward ratio attribute"
+        }
+      }
+    },
+    "RewardRatioAttributeModel": {
+      "type": "object",
+      "properties": {
+        "Ratios": {
+          "description": "Represents a list of condition's ratios",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RatioAttributeModel"
+          }
+        },
+        "RatioCompletion": {
+          "description": "Represents a list of condition's ratios completions",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RatioCompletion"
+          }
+        }
+      }
+    },
+    "RatioAttributeModel": {
+      "description": "Represents a ration attribute model",
+      "required": [
+        "Order",
+        "RewardRatio",
+        "PaymentRatio",
+        "Threshold"
+      ],
+      "type": "object",
+      "properties": {
+        "Order": {
+          "format": "int32",
+          "description": "Represents ratio order",
+          "type": "integer"
+        },
+        "RewardRatio": {
+          "format": "double",
+          "description": "Represents reward ratio percent",
+          "type": "number"
+        },
+        "PaymentRatio": {
+          "format": "double",
+          "description": "Represents payment ratio percent",
+          "type": "number"
+        },
+        "Threshold": {
+          "format": "double",
+          "description": "Represents reward threshold",
+          "type": "number"
+        }
+      }
+    },
+    "RatioCompletion": {
+      "required": [
+        "GivenThreshold",
+        "Checkpoint"
+      ],
+      "type": "object",
+      "properties": {
+        "PaymentId": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "GivenThreshold": {
+          "format": "double",
+          "type": "number"
+        },
+        "Checkpoint": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "EarnRuleExtendedModel": {
+      "description": "Represents an earn rule with customer's completion count.",
+      "required": [
+        "AmountInCurrency",
+        "CustomerCompletionCount",
+        "Status",
+        "RewardType",
+        "FromDate",
+        "CreationDate",
+        "CompletionCount"
+      ],
+      "type": "object",
+      "properties": {
+        "AmountInTokens": {
+          "description": "The amount in tokens.",
+          "type": "string"
+        },
+        "AmountInCurrency": {
+          "format": "double",
+          "description": "The amount in the target currency.",
+          "type": "number"
+        },
+        "CustomerCompletionCount": {
+          "format": "int32",
+          "description": "The count of condition completion by a current customer.",
+          "type": "integer"
+        },
+        "CurrentRewardedAmount": {
+          "description": "The amount in tokens which the customer has earned for the moment",
+          "type": "string"
+        },
+        "Conditions": {
+          "description": "Represents a mandatory condition",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionExtendedModel"
+          }
+        },
+        "OptionalConditions": {
+          "description": "Represents a list of optional Conditions' names",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionExtendedModel"
+          }
+        },
+        "Id": {
+          "description": "The earn rule unique identifier.",
+          "type": "string"
+        },
+        "Title": {
+          "description": "The earn rule localized title.",
+          "type": "string"
+        },
+        "Status": {
+          "description": "Represents status of the Earn Rule",
+          "enum": [
+            "Pending",
+            "Active",
+            "Completed",
+            "Inactive"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "CampaignStatus",
+            "modelAsString": false
+          }
+        },
+        "Description": {
+          "description": "The earn rule localized description.",
+          "type": "string"
+        },
+        "ImageUrl": {
+          "description": "The earn rule localized imageUrl.",
+          "type": "string"
+        },
+        "Reward": {
+          "description": "Represents the Reward that is going to be granted once all conditions are met",
+          "type": "string"
+        },
+        "RewardType": {
+          "description": "Type of the reward for the Earn Rule",
+          "enum": [
+            "Fixed",
+            "ConversionRate"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "RewardType",
+            "modelAsString": false
+          }
+        },
+        "FromDate": {
+          "format": "date-time",
+          "description": "Represents Start Date of the Earn Rule",
+          "type": "string"
+        },
+        "ToDate": {
+          "format": "date-time",
+          "description": "Represents End Date of the Earn Rule",
+          "type": "string"
+        },
+        "CreatedBy": {
+          "description": "Represents identification of User who created Earn Rule",
+          "type": "string"
+        },
+        "CreationDate": {
+          "format": "date-time",
+          "description": "Represents the creation date of the Earn Rule",
+          "type": "string"
+        },
+        "CompletionCount": {
+          "format": "int32",
+          "description": "Represents how many times, Earn Rule can be completed",
+          "type": "integer"
+        }
+      }
+    },
+    "ConditionExtendedModel": {
+      "description": "Represents Condition with Customer's completion count",
+      "required": [
+        "CustomerCompletionCount",
+        "CompletionCount",
+        "HasStaking",
+        "RewardType",
+        "UsePartnerCurrencyRate"
+      ],
+      "type": "object",
+      "properties": {
+        "CustomerCompletionCount": {
+          "format": "int32",
+          "description": "The count of condition completion by a current customer.",
+          "type": "integer"
+        },
+        "Partners": {
+          "description": "A collection of associated partners.",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PartnerModel"
+          }
+        },
+        "Id": {
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Type": {
+          "description": "The bonus type name.",
+          "type": "string"
+        },
+        "DisplayName": {
+          "description": "The bonus type display name.",
+          "type": "string"
+        },
+        "ImmediateReward": {
+          "description": "The amount of reward that will be given once the condition is completed.",
+          "type": "string"
+        },
+        "CompletionCount": {
+          "format": "int32",
+          "description": "The number of condition completion.",
+          "type": "integer"
+        },
+        "HasStaking": {
+          "description": "Identify if the condition has staking",
+          "type": "boolean"
+        },
+        "StakeAmount": {
+          "description": "Represents stake amount",
+          "type": "string"
+        },
+        "StakingPeriod": {
+          "format": "int32",
+          "description": "Represents a staking period",
+          "type": "integer"
+        },
+        "StakeWarningPeriod": {
+          "format": "int32",
+          "description": "Represents stake warning period",
+          "type": "integer"
+        },
+        "StakingRule": {
+          "format": "double",
+          "description": "Represents staking percentage",
+          "type": "number"
+        },
+        "BurningRule": {
+          "format": "double",
+          "description": "Represents staking burning percent",
+          "type": "number"
+        },
+        "RewardType": {
+          "description": "Indicates the reward type.",
+          "enum": [
+            "Fixed",
+            "ConversionRate"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "RewardType",
+            "modelAsString": false
+          }
+        },
+        "AmountInTokens": {
+          "description": "The amount in tokens to calculate rate.",
+          "type": "string"
+        },
+        "AmountInCurrency": {
+          "format": "double",
+          "description": "The amount in currency to calculate rate.",
+          "type": "number"
+        },
+        "UsePartnerCurrencyRate": {
+          "description": "Indicates that the partner currency rate should be used to convert an amount.",
+          "type": "boolean"
+        },
+        "RewardRatio": {
+          "$ref": "#/definitions/RewardRatioAttributeModel",
+          "description": "Represents a condition reward ratio attribute"
+        }
+      }
+    },
+    "PartnerModel": {
+      "description": "Represents a partner.",
+      "required": [
+        "Id"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "format": "uuid",
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Name": {
+          "description": "The partner name.",
+          "type": "string"
+        },
+        "Locations": {
+          "description": "The partner locations.",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocationModel"
+          }
+        }
+      }
+    },
+    "LocationModel": {
+      "description": "Represents a partner's location.",
+      "required": [
+        "Id",
+        "CreatedAt"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "format": "uuid",
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Name": {
+          "description": "The locations name.",
+          "type": "string"
+        },
+        "Address": {
+          "description": "The location address.",
+          "type": "string"
+        },
+        "CreatedAt": {
+          "format": "date-time",
+          "description": "The location creation timestamp.",
+          "type": "string"
+        }
+      }
+    },
+    "EarnRuleStakingListModel": {
+      "description": "Represents Earn Rules Stakings",
+      "required": [
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "EarnRuleStakings": {
+          "description": "Earn Rule stakings",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EarnRuleStakingModel"
+          }
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "Total count",
+          "type": "integer"
+        }
+      }
+    },
+    "EarnRuleStakingModel": {
+      "required": [
+        "StakeAmount",
+        "TotalReward",
+        "StakingPeriod",
+        "StakeWarningPeriod",
+        "StakingRule",
+        "Timestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "ReferralId": {
+          "description": "Unique identifier of the referral stake",
+          "type": "string"
+        },
+        "ReferralName": {
+          "description": "Full name of the referral",
+          "type": "string"
+        },
+        "StakeAmount": {
+          "description": "Represents stake amount",
+          "type": "string"
+        },
+        "TotalReward": {
+          "description": "Represents total reward amount",
+          "type": "string"
+        },
+        "StakingPeriod": {
+          "format": "int32",
+          "description": "Represents a staking period",
+          "type": "integer"
+        },
+        "StakeWarningPeriod": {
+          "format": "int32",
+          "description": "Represents stake warning period",
+          "type": "integer"
+        },
+        "StakingRule": {
+          "format": "double",
+          "description": "Represents staking percentage",
+          "type": "number"
+        },
+        "Timestamp": {
+          "format": "date-time",
+          "description": "Timestamp",
+          "type": "string"
+        }
+      }
+    },
+    "EmailVerificationRequest": {
+      "description": "Email verification request",
+      "type": "object",
+      "properties": {
+        "VerificationCode": {
+          "description": "Verification code",
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedOperationsHistoryResponseModel": {
+      "description": "Paginated response model with list of operations history",
+      "required": [
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "Operations": {
+          "description": "The list of operations history",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OperationHistoryResponseModel"
+          }
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "The total count of records",
+          "type": "integer"
+        }
+      }
+    },
+    "OperationHistoryResponseModel": {
+      "description": "Response model for operation history",
+      "required": [
+        "Type",
+        "Timestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "Type": {
+          "description": "The type of the operation",
+          "enum": [
+            "SendTransfer",
+            "ReceiveTransfer",
+            "BonusReward",
+            "PaymentTransfer",
+            "PaymentTransferRefund",
+            "PartnerPayment",
+            "PartnerPaymentRefund",
+            "LinkedWalletSendTransfer",
+            "LinkedWalletReceiveTransfer",
+            "ReferralStake",
+            "ReleasedReferralStake",
+            "WalletLinkingFee",
+            "TransferToPublicFee"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "HistoryOperationType",
+            "modelAsString": false
+          }
+        },
+        "Timestamp": {
+          "format": "date-time",
+          "description": "The timestamp of the operation",
+          "type": "string"
+        },
+        "Amount": {
+          "description": "The amount of tokens",
+          "type": "string"
+        },
+        "ActionRule": {
+          "description": "The name of the campaign or condition for bonus reward",
+          "type": "string"
+        },
+        "OtherSideCustomerEmail": {
+          "description": "Email of the other customer",
+          "type": "string"
+        },
+        "PartnerName": {
+          "description": "Name of the partner",
+          "type": "string"
+        }
+      }
+    },
+    "IsAliveResponse": {
+      "required": [
+        "IsDebug"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string"
+        },
+        "isDebug": {
+          "type": "boolean"
+        },
+        "issueIndicators": {
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IssueIndicator"
+          }
+        }
+      }
+    },
+    "IssueIndicator": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "CountryOfResidenceModel": {
+      "description": "Represents a country of residents.",
+      "required": [
+        "Id"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "format": "int32",
+          "description": "The country unique identifier.",
+          "type": "integer"
+        },
+        "Name": {
+          "description": "The country localized name.",
+          "type": "string"
+        },
+        "CountryIso2Code": {
+          "description": "The country ISO 3166-1 alpha-2 code.",
+          "type": "string"
+        },
+        "CountryIso3Code": {
+          "description": "The country ISO 3166-1 alpha-3 code.",
+          "type": "string"
+        }
+      }
+    },
+    "CountryPhoneCodeModel": {
+      "description": "Represents a country dialling code.",
+      "required": [
+        "Id"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "format": "int32",
+          "description": "The country phone code unique identifier.",
+          "type": "integer"
+        },
+        "Code": {
+          "description": "The Salesforce country phone code.",
+          "type": "string"
+        },
+        "CountryName": {
+          "description": "The country localized name.",
+          "type": "string"
+        },
+        "CountryIso2Code": {
+          "description": "The country ISO 3166-1 alpha-2 code.",
+          "type": "string"
+        },
+        "CountryIso3Code": {
+          "description": "The country ISO 3166-1 alpha-3 code.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "ErrorMessage": {
+          "type": "string"
+        },
+        "ModelErrors": {
+          "type": "object",
+          "additionalProperties": {
+            "uniqueItems": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "GetPartnerMessageResponseModel": {
+      "description": "Get partner message response model",
+      "required": [
+        "Timestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "PartnerMessageId": {
+          "description": "Partner message id",
+          "type": "string"
+        },
+        "PartnerId": {
+          "description": "Partner id",
+          "type": "string"
+        },
+        "PartnerName": {
+          "description": "Partner name",
+          "type": "string"
+        },
+        "LocationId": {
+          "description": "Location id",
+          "type": "string"
+        },
+        "LocationName": {
+          "description": "Location name",
+          "type": "string"
+        },
+        "CustomerId": {
+          "description": "Customer id",
+          "type": "string"
+        },
+        "Timestamp": {
+          "format": "date-time",
+          "description": "Creation timestamp",
+          "type": "string"
+        },
+        "Subject": {
+          "description": "Subject",
+          "type": "string"
+        },
+        "Message": {
+          "description": "Message content",
+          "type": "string"
+        }
+      }
+    },
+    "PartnerPaymentRequestDetailsResponse": {
+      "description": "Payment request details",
+      "required": [
+        "TotalInCurrency",
+        "Date",
+        "LastUpdatedDate",
+        "TokensToFiatConversionRate",
+        "CustomerActionExpirationTimeLeftInSeconds",
+        "CustomerActionExpirationTimestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "PaymentRequestId": {
+          "description": "The payment request id",
+          "type": "string"
+        },
+        "Status": {
+          "description": "The payment request status",
+          "type": "string"
+        },
+        "TotalInToken": {
+          "description": "The total bill in tokens",
+          "type": "string"
+        },
+        "TotalInCurrency": {
+          "format": "double",
+          "description": "The total bill in base currency",
+          "type": "number"
+        },
+        "SendingAmountInToken": {
+          "description": "The amount customer wished to pay in tokens",
+          "type": "string"
+        },
+        "CurrencyCode": {
+          "description": "The fiat currency code, is base currency",
+          "type": "string"
+        },
+        "PartnerId": {
+          "description": "The partner id",
+          "type": "string"
+        },
+        "PartnerName": {
+          "description": "The partner name",
+          "type": "string"
+        },
+        "LocationId": {
+          "description": "The location id",
+          "type": "string"
+        },
+        "LocationName": {
+          "description": "The name of the location",
+          "type": "string"
+        },
+        "PaymentInfo": {
+          "description": "The payment info related to request and provided by partner",
+          "type": "string"
+        },
+        "WalletBalance": {
+          "description": "The customer wallet balance in tokens",
+          "type": "string"
+        },
+        "Date": {
+          "format": "date-time",
+          "description": "The datetime when payment request was created",
+          "type": "string"
+        },
+        "LastUpdatedDate": {
+          "format": "date-time",
+          "description": "The datetime when payment request was last updated",
+          "type": "string"
+        },
+        "TokensToFiatConversionRate": {
+          "format": "double",
+          "description": "Conversion rate used to convert between tokens and fiat",
+          "type": "number"
+        },
+        "CustomerActionExpirationTimeLeftInSeconds": {
+          "format": "int32",
+          "description": "Time left before marking the request as expired if it is still in created state",
+          "type": "integer"
+        },
+        "CustomerActionExpirationTimestamp": {
+          "format": "date-time",
+          "description": "Timestamp when the request will expire if it is not approved/rejected by the customer",
+          "type": "string"
+        },
+        "RequestedAmountInTokens": {
+          "description": "The amount requested by receptionist in tokens",
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedPartnerPaymentRequestsResponse": {
+      "description": "Response model",
+      "required": [
+        "CurrentPage",
+        "PageSize",
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "CurrentPage": {
+          "format": "int32",
+          "description": "The current page number",
+          "type": "integer"
+        },
+        "PageSize": {
+          "format": "int32",
+          "description": "Size of a page",
+          "type": "integer"
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "Total count of all items",
+          "type": "integer"
+        },
+        "PaymentRequests": {
+          "description": "Collection of payment requests",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PartnerPaymentRequestItemResponse"
+          }
+        }
+      }
+    },
+    "PartnerPaymentRequestItemResponse": {
+      "description": "The payment request as a part of array of requests",
+      "required": [
+        "TotalInCurrency",
+        "Date",
+        "LastUpdatedDate"
+      ],
+      "type": "object",
+      "properties": {
+        "PaymentRequestId": {
+          "description": "The payment request id",
+          "type": "string"
+        },
+        "Status": {
+          "description": "The payment request status",
+          "type": "string"
+        },
+        "TotalInToken": {
+          "description": "The total bill in tokens",
+          "type": "string"
+        },
+        "TotalInCurrency": {
+          "format": "double",
+          "description": "The total bill in base currency",
+          "type": "number"
+        },
+        "SendingAmountInToken": {
+          "description": "The amount customer wished to pay in tokens",
+          "type": "string"
+        },
+        "CurrencyCode": {
+          "description": "The fiat currency code, is base currency",
+          "type": "string"
+        },
+        "PartnerId": {
+          "description": "The partner id",
+          "type": "string"
+        },
+        "PartnerName": {
+          "description": "The name of the partner",
+          "type": "string"
+        },
+        "LocationId": {
+          "description": "The location id",
+          "type": "string"
+        },
+        "PaymentInfo": {
+          "description": "The payment info related to request and provided by partner",
+          "type": "string"
+        },
+        "Date": {
+          "format": "date-time",
+          "description": "The datetime when payment request was created",
+          "type": "string"
+        },
+        "LastUpdatedDate": {
+          "format": "date-time",
+          "description": "The datetime when payment request was last updated",
+          "type": "string"
+        }
+      }
+    },
+    "ApprovePartnerPaymentRequest": {
+      "description": "Request model",
+      "required": [
+        "PaymentRequestId",
+        "SendingAmount"
+      ],
+      "type": "object",
+      "properties": {
+        "PaymentRequestId": {
+          "description": "Id of the payment request",
+          "type": "string"
+        },
+        "SendingAmount": {
+          "description": "Amount which customer wants to pay",
+          "type": "string"
+        }
+      }
+    },
+    "RejectPartnerPaymentRequest": {
+      "description": "Request model",
+      "required": [
+        "PaymentRequestId"
+      ],
+      "type": "object",
+      "properties": {
+        "PaymentRequestId": {
+          "description": "Id of the payment request",
+          "type": "string"
+        }
+      }
+    },
+    "VerifyPhoneRequest": {
+      "description": "Request model for phone verification confirmation",
+      "required": [
+        "VerificationCode"
+      ],
+      "type": "object",
+      "properties": {
+        "VerificationCode": {
+          "description": "Phone verification code",
+          "type": "string"
+        }
+      }
+    },
+    "SetCustomerPhoneRequest": {
+      "description": "Request model to set customer's phone number in the system",
+      "required": [
+        "PhoneNumber",
+        "CountryPhoneCodeId"
+      ],
+      "type": "object",
+      "properties": {
+        "PhoneNumber": {
+          "description": "The customer phone number.",
+          "maxLength": 15,
+          "pattern": "^[0-9]+$",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The phone country dialing code identifier.",
+          "type": "integer"
+        }
+      }
+    },
+    "PushNotificationRegisterRequestModel": {
+      "type": "object",
+      "properties": {
+        "InfobipPushRegistrationId": {
+          "type": "string"
+        },
+        "FirebaseToken": {
+          "type": "string"
+        },
+        "AppleToken": {
+          "type": "string"
+        }
+      }
+    },
+    "PushNotificationRegisterResponseModel": {
+      "required": [
+        "ResultCode"
+      ],
+      "type": "object",
+      "properties": {
+        "ResultCode": {
+          "enum": [
+            "Ok",
+            "InfobipPushRegistrationAlreadyExists",
+            "FirebaseTokenAlreadyExists",
+            "AppleTokenAlreadyExists"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "PushNotificationRegistrationResult",
+            "modelAsString": false
+          }
+        }
+      }
+    },
+    "ReferralResponseModel": {
+      "type": "object",
+      "properties": {
+        "ReferralCode": {
+          "description": "Referral Code for customer",
+          "type": "string"
+        }
+      }
+    },
+    "LeadReferralsListResponseModel": {
+      "type": "object",
+      "properties": {
+        "LeadReferrals": {
+          "description": "ReferralLeads",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LeadReferral"
+          }
+        }
+      }
+    },
+    "LeadReferral": {
+      "description": "Represents referral lead.",
+      "required": [
+        "Status",
+        "TimeStamp",
+        "PurchaseCount",
+        "OffersCount"
+      ],
+      "type": "object",
+      "properties": {
+        "Name": {
+          "description": "Name of the referred lead",
+          "type": "string"
+        },
+        "Status": {
+          "description": "Status of the referral",
+          "enum": [
+            "Sent",
+            "Accepted",
+            "Approved",
+            "Rejected"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "ReferralLeadStatus",
+            "modelAsString": false
+          }
+        },
+        "TimeStamp": {
+          "format": "date-time",
+          "description": "TimeStamp of the referral",
+          "type": "string"
+        },
+        "PurchaseCount": {
+          "format": "int32",
+          "description": "The number of SPA (sales purchase agreement)",
+          "type": "integer"
+        },
+        "OffersCount": {
+          "format": "int32",
+          "description": "The number of OTP (offers to purchase).",
+          "type": "integer"
+        }
+      }
+    },
+    "ReferralLeadRequestModel": {
+      "required": [
+        "CountryPhoneCodeId",
+        "CampaignId"
+      ],
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "description": "The first name of the referred lead.",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The last name of the referred lead.",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The country phone code identifier.",
+          "type": "integer"
+        },
+        "PhoneNumber": {
+          "description": "The phone number of the referred lead.",
+          "type": "string"
+        },
+        "Email": {
+          "description": "The email of the referred lead.",
+          "type": "string"
+        },
+        "Note": {
+          "description": "The note to Emaar.",
+          "type": "string"
+        },
+        "CampaignId": {
+          "format": "uuid",
+          "description": "Campaign's id",
+          "type": "string"
+        }
+      }
+    },
+    "ConfirmReferralLeadRequest": {
+      "description": "Confirm lead referral request",
+      "type": "object",
+      "properties": {
+        "ConfirmationCode": {
+          "description": "Confirmation code",
+          "type": "string"
+        }
+      }
+    },
+    "HotelReferralRequestModel": {
+      "required": [
+        "CountryPhoneCodeId",
+        "CampaignId"
+      ],
+      "type": "object",
+      "properties": {
+        "Email": {
+          "description": "The email of the referred person.",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The country phone code identifier.",
+          "type": "integer"
+        },
+        "PhoneNumber": {
+          "description": "The phone number of the referred lead.",
+          "type": "string"
+        },
+        "FullName": {
+          "description": "Full name of the referred person.",
+          "type": "string"
+        },
+        "CampaignId": {
+          "format": "uuid",
+          "description": "Represents a campaign's id",
+          "type": "string"
+        }
+      }
+    },
+    "HotelReferralsListResponseModel": {
+      "type": "object",
+      "properties": {
+        "HotelReferrals": {
+          "description": "Hotel referral leads",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HotelReferralModel"
+          }
+        }
+      }
+    },
+    "HotelReferralModel": {
+      "description": "Represents hotel referral lead.",
+      "required": [
+        "CountryPhoneCodeId",
+        "Status",
+        "TimeStamp"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "description": "Id of the referral",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "Name of the referred lead if customer",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "Name of the referred lead if customer",
+          "type": "string"
+        },
+        "FullName": {
+          "description": "Full name of the referred lead",
+          "type": "string"
+        },
+        "CountryPhoneCodeId": {
+          "format": "int32",
+          "description": "The country phone code identifier.",
+          "type": "integer"
+        },
+        "PhoneNumber": {
+          "description": "The phone number of the referred lead.",
+          "type": "string"
+        },
+        "Status": {
+          "description": "Status of the referral",
+          "enum": [
+            "Pending",
+            "Confirmed",
+            "Used",
+            "Expired"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "ReferralHotelStatus",
+            "modelAsString": false
+          }
+        },
+        "TimeStamp": {
+          "format": "date-time",
+          "description": "TimeStamp of the referral",
+          "type": "string"
+        },
+        "Email": {
+          "description": "Email of the referred person",
+          "type": "string"
+        }
+      }
+    },
+    "ConfirmReferralHotelRequest": {
+      "description": "Confirm hotel referral request",
+      "type": "object",
+      "properties": {
+        "ConfirmationCode": {
+          "description": "Confirmation code",
+          "type": "string"
+        }
+      }
+    },
+    "ConfirmReferralHotelResponse": {
+      "description": "Confirm referral hotel response",
+      "type": "object",
+      "properties": {
+        "Email": {
+          "description": "Email of the person who referred",
+          "type": "string"
+        }
+      }
+    },
+    "ReferralsListResponseModel": {
+      "required": [
+        "CurrentPage",
+        "PageSize",
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "Referrals": {
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CustomerCommonReferralResponseModel"
+          }
+        },
+        "CurrentPage": {
+          "format": "int32",
+          "description": "Current page",
+          "type": "integer"
+        },
+        "PageSize": {
+          "format": "int32",
+          "description": "Page size",
+          "type": "integer"
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "Total count of records",
+          "type": "integer"
+        }
+      }
+    },
+    "CustomerCommonReferralResponseModel": {
+      "required": [
+        "ReferralType",
+        "Status",
+        "TimeStamp",
+        "HasStaking",
+        "RewardHasRatio"
+      ],
+      "type": "object",
+      "properties": {
+        "ReferralType": {
+          "description": "Referral typed in common referral model",
+          "enum": [
+            "RealEstate",
+            "Hospitality"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "ReferralType",
+            "modelAsString": false
+          }
+        },
+        "Status": {
+          "description": "Common referral status",
+          "enum": [
+            "Ongoing",
+            "Accepted",
+            "Expired"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "CommonReferralStatus",
+            "modelAsString": false
+          }
+        },
+        "Vertical": {
+          "description": "If real estate",
+          "enum": [
+            "Hospitality",
+            "RealEstate",
+            "Retail"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "BusinessVertical",
+            "modelAsString": false
+          }
+        },
+        "FirstName": {
+          "description": "The first name of the referred customer.",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "The last name of the referred customer.",
+          "type": "string"
+        },
+        "PartnerName": {
+          "description": "Partner's name.",
+          "type": "string"
+        },
+        "TimeStamp": {
+          "format": "date-time",
+          "description": "TimeStamp of the referral",
+          "type": "string"
+        },
+        "HasStaking": {
+          "description": "Identifies if the referral is stakeable",
+          "type": "boolean"
+        },
+        "TotalReward": {
+          "description": "Represents total reward amount for earn rule",
+          "type": "string"
+        },
+        "CurrentRewardedAmount": {
+          "description": "The amount in tokens which the customer has earned for the moment",
+          "type": "string"
+        },
+        "RewardRatio": {
+          "$ref": "#/definitions/RewardRatioAttributeModel",
+          "description": "Represents a condition reward ratio attribute"
+        },
+        "RewardHasRatio": {
+          "description": "Identifies if referral has reward ratio",
+          "type": "boolean"
+        },
+        "Staking": {
+          "$ref": "#/definitions/ReferralStakingModel",
+          "description": ""
+        }
+      }
+    },
+    "ReferralStakingModel": {
+      "required": [
+        "StakingExpirationDate",
+        "GivenStakedBonus"
+      ],
+      "type": "object",
+      "properties": {
+        "StakeAmount": {
+          "description": "Represents stake amount",
+          "type": "string"
+        },
+        "StakingExpirationDate": {
+          "format": "date-time",
+          "description": "Staking expiration date",
+          "type": "string"
+        },
+        "GivenStakedBonus": {
+          "format": "double",
+          "description": "The percentage of staking that is given for the moment",
+          "type": "number"
+        }
+      }
+    },
+    "SpendRuleListDetailsModel": {
+      "description": "Represents a spend rule.",
+      "required": [
+        "Id",
+        "BusinessVertical",
+        "CreationDate"
+      ],
+      "type": "object",
+      "properties": {
+        "Id": {
+          "format": "uuid",
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Title": {
+          "description": "The spend rule title.",
+          "type": "string"
+        },
+        "CurrencyName": {
+          "description": "The name of the target currency",
+          "type": "string"
+        },
+        "Description": {
+          "description": "The spend rule localized description.",
+          "type": "string"
+        },
+        "ImageUrl": {
+          "description": "The spend rule localized imageUrl.",
+          "type": "string"
+        },
+        "BusinessVertical": {
+          "description": "The spend rule business vertical.",
+          "enum": [
+            "Hospitality",
+            "RealEstate",
+            "Retail"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "BusinessVertical",
+            "modelAsString": false
+          }
+        },
+        "CreationDate": {
+          "format": "date-time",
+          "description": "Represents spend rule's creation date",
+          "type": "string"
+        }
+      }
+    },
+    "SpendRuleDetailsModel": {
+      "description": "Represents a spend rule.",
+      "required": [
+        "AmountInCurrency",
+        "Id",
+        "BusinessVertical",
+        "CreationDate"
+      ],
+      "type": "object",
+      "properties": {
+        "AmountInTokens": {
+          "description": "The amount in tokens.",
+          "type": "string"
+        },
+        "AmountInCurrency": {
+          "format": "double",
+          "description": "The amount in the target currency.",
+          "type": "number"
+        },
+        "Partners": {
+          "description": "A collection of associated partners.",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PartnerModel"
+          }
+        },
+        "Id": {
+          "format": "uuid",
+          "description": "The unique identifier.",
+          "type": "string"
+        },
+        "Title": {
+          "description": "The spend rule title.",
+          "type": "string"
+        },
+        "CurrencyName": {
+          "description": "The name of the target currency",
+          "type": "string"
+        },
+        "Description": {
+          "description": "The spend rule localized description.",
+          "type": "string"
+        },
+        "ImageUrl": {
+          "description": "The spend rule localized imageUrl.",
+          "type": "string"
+        },
+        "BusinessVertical": {
+          "description": "The spend rule business vertical.",
+          "enum": [
+            "Hospitality",
+            "RealEstate",
+            "Retail"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "BusinessVertical",
+            "modelAsString": false
+          }
+        },
+        "CreationDate": {
+          "format": "date-time",
+          "description": "Represents spend rule's creation date",
+          "type": "string"
+        }
+      }
+    },
+    "WalletResponseModel": {
+      "required": [
+        "IsWalletBlocked",
+        "PublicAddressLinkingStatus"
+      ],
+      "type": "object",
+      "properties": {
+        "Balance": {
+          "type": "string"
+        },
+        "ExternalBalance": {
+          "type": "string"
+        },
+        "AssetSymbol": {
+          "type": "string"
+        },
+        "IsWalletBlocked": {
+          "type": "boolean"
+        },
+        "TotalEarned": {
+          "type": "string"
+        },
+        "TotalSpent": {
+          "type": "string"
+        },
+        "StakedBalance": {
+          "type": "string"
+        },
+        "PrivateWalletAddress": {
+          "type": "string"
+        },
+        "PublicWalletAddress": {
+          "type": "string"
+        },
+        "PublicAddressLinkingStatus": {
+          "enum": [
+            "NotLinked",
+            "PendingCustomerApproval",
+            "PendingConfirmationInBlockchain",
+            "Linked"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "PublicAddressLinkingStatus",
+            "modelAsString": false
+          }
+        },
+        "TransitAccountAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "TransferOperationRequest": {
+      "required": [
+        "Amount"
+      ],
+      "type": "object",
+      "properties": {
+        "ReceiverEmail": {
+          "type": "string"
+        },
+        "Amount": {
+          "type": "string"
+        }
+      }
+    },
+    "TransferOperationResponse": {
+      "type": "object",
+      "properties": {
+        "TransactionId": {
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedTransfersResponseModel": {
+      "description": "Paginated response model with list of transfers",
+      "required": [
+        "TotalCount"
+      ],
+      "type": "object",
+      "properties": {
+        "Transfers": {
+          "description": "List of transfers",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransferResponseModel"
+          }
+        },
+        "TotalCount": {
+          "format": "int32",
+          "description": "Total count",
+          "type": "integer"
+        }
+      }
+    },
+    "TransferResponseModel": {
+      "description": "Response model representing a balance transfer between customers",
+      "required": [
+        "IsSender",
+        "Timestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "IsSender": {
+          "description": "Flag which shows if the customer is sender or receiver",
+          "type": "boolean"
+        },
+        "AssetSymbol": {
+          "description": "AssetSymbol",
+          "type": "string"
+        },
+        "Amount": {
+          "description": "Transferred amount",
+          "type": "string"
+        },
+        "Timestamp": {
+          "format": "date-time",
+          "description": "Timestamp of the transfer",
+          "type": "string"
+        }
+      }
+    },
+    "PaymentTransferRequestModel": {
+      "required": [
+        "Amount"
+      ],
+      "type": "object",
+      "properties": {
+        "CampaignId": {
+          "description": "Id of the spend campaign",
+          "type": "string"
+        },
+        "InvoiceId": {
+          "description": "Id of the invoice",
+          "type": "string"
+        },
+        "Amount": {
+          "description": "Amount to be transferred",
+          "type": "string"
+        }
+      }
+    },
+    "LinkWalletResponse": {
+      "type": "object",
+      "properties": {
+        "LinkCode": {
+          "type": "string"
+        }
+      }
+    },
+    "ApproveExternalWalletLinkRequest": {
+      "required": [
+        "PrivateAddress",
+        "PublicAddress",
+        "Signature"
+      ],
+      "type": "object",
+      "properties": {
+        "PrivateAddress": {
+          "type": "string"
+        },
+        "PublicAddress": {
+          "type": "string"
+        },
+        "Signature": {
+          "type": "string"
+        }
+      }
+    },
+    "TransferToExternalWalletRequest": {
+      "required": [
+        "Amount"
+      ],
+      "type": "object",
+      "properties": {
+        "Amount": {
+          "type": "string"
+        }
+      }
+    },
+    "NextWalletLinkingFeeResponseModel": {
+      "required": [
+        "Fee"
+      ],
+      "type": "object",
+      "properties": {
+        "Fee": {
+          "type": "string"
+        }
+      }
+    },
+    "TransferToPublicFeeResponseModel": {
+      "required": [
+        "Fee"
+      ],
+      "type": "object",
+      "properties": {
+        "Fee": {
+          "description": "Fee for public transfers",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
