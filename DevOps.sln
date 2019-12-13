@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Signtransaction", "Signtran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwaggerCompare", "SwaggerCompare\SwaggerCompare.csproj", "{606A52C8-2E30-447F-BA63-6B671F5E8229}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaseAzureStorege", "ReplaseAzureStorege\ReplaseAzureStorege.csproj", "{73784845-0231-4973-879E-6AEF4EC16EDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. common", "00. common", "{54219151-665E-473F-B25D-B8480AC04C78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. setting server", "02. setting server", "{68D9545B-120A-409E-B6CB-EB41B53721BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,17 @@ Global
 		{606A52C8-2E30-447F-BA63-6B671F5E8229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{606A52C8-2E30-447F-BA63-6B671F5E8229}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{606A52C8-2E30-447F-BA63-6B671F5E8229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73784845-0231-4973-879E-6AEF4EC16EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73784845-0231-4973-879E-6AEF4EC16EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73784845-0231-4973-879E-6AEF4EC16EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73784845-0231-4973-879E-6AEF4EC16EDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{33C9015E-D448-47B3-8B3D-7C9FE17D0B12} = {54219151-665E-473F-B25D-B8480AC04C78}
+		{73784845-0231-4973-879E-6AEF4EC16EDF} = {68D9545B-120A-409E-B6CB-EB41B53721BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9EDF56B0-34F8-4FDF-8153-A53D4786CB6E}

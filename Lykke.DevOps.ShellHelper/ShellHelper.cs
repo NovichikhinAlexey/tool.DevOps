@@ -29,4 +29,15 @@ namespace ApplicationInsight
             return result;
         }
     }
+
+    public class StorageAccountCheckNameResponce
+    {
+        public string message { get; set; }
+        public bool nameAvailable { get; set; }
+    }
+
+    public class StorageAccountConnectionString
+    {
+        public string connectionString { get; set; }
+    }
 }
